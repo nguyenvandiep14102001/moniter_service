@@ -41,7 +41,7 @@ def get_services():
             "method": s.method.value,
             "data": s.data,
             "cookies": s.cookie,
-            "timeout": 5,
+            "timeout": s.timeout,
             "cron": s.cron
         })
     return jsonify(result)
@@ -57,7 +57,8 @@ def add_service():
         method=HttpMethod[data["method"].upper()],
         data=data.get("data", {}),
         cookie=data.get("cookies", {}),
-        cron=data.get("schedule_time")
+        cron=data.get("schedule_time"),
+        timeout=data.get("timeout", 5)
     )
     db.session.add(new_service)
     db.session.commit()
@@ -80,6 +81,7 @@ def update_service(service_id):
     service.data = data.get("data", {})
     service.cookie = data.get("cookies", {})
     service.cron = data.get("schedule_time")
+    service.timeout = data.get("timeout", service.timeout)
 
     db.session.commit()
 
