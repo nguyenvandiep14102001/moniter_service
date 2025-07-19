@@ -29,13 +29,13 @@ def check_service_job(service_id, app):
                     service.url,
                     json=service.data or {},
                     cookies=service.cookie or {},
-                    timeout=5
+                    timeout=service.timeout or 5 
                 )
             else:
                 response = requests.get(
                     service.url,
                     cookies=service.cookie or {},
-                    timeout=5
+                    timeout=service.timeout or 5 
                 )
 
             if 400 <= response.status_code < 600:
